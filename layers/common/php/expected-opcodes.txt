@@ -1,0 +1,5 @@
+0000 CV0($start) = RECV 1
+0001 CV1($end) = RECV 2
+0002 CV2($base) = RECV_INIT 3 int(10)
+0003 CV3($mantissas) = RECV_INIT 4 null
+0004 JMP 0004

@@ -1,0 +1,18 @@
+{
+ "version": "1.2.0",
+ "packagesDir": ".lake/packages",
+ "packages": [
+  {
+   "type": "path",
+   "scope": "",
+   "name": "orderly",
+   "manifestFile": "lake-manifest.json",
+   "inherited": false,
+   "dir": "../../common/lean",
+   "configFile": "lakefile.toml"
+  }
+ ],
+ "name": "orderly_layer_1",
+ "lakeDir": ".lake",
+ "fixedToolchain": false
+}

@@ -1,0 +1,6 @@
+name = "orderly"
+version = "0.1.0"
+defaultTargets = ["Orderly"]
+
+[[lean_lib]]
+name = "Orderly"
