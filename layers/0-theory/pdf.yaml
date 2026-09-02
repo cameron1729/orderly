@@ -1,0 +1,21 @@
+from: markdown+tex_math_dollars+gfm_auto_identifiers
+to: latex
+standalone: true
+pdf-engine: xelatex
+pdf-engine-opts:
+  - -no-shell-escape
+template: layers/common/pdf/template.tex
+filters:
+  - layers/common/pdf/document.lua
+metadata:
+  title: Orderly
+  subtitle: "Layer 0: Categorical theory"
+  document_kind: theory
+  sources:
+    - path: layers/0-theory/THEORY.md
+      id: theory
+      kind: document
+    - path: layers/common/templates/theory-source.md
+      id: theory-source
+      kind: template
+      page_break: true

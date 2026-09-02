@@ -1,0 +1,35 @@
+name: Verify Layer 0
+description: Verify the PHP library against the mathematical theory
+
+runs:
+  using: composite
+  steps:
+    - name: Verify the repository witness
+      shell: bash
+      run: ${{ github.action_path }}/verify
+
+    - name: Check the Lean proof
+      uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1.6.0
+      with:
+        lake-package-directory: layers/0-theory/lean
+        build: true
+        build-args: --wfail
+        test: false
+        use-mathlib-cache: false
+        leanchecker: true
+        leanchecker-args: Layer0 Orderly
+        axiom-audit: true
+        axiom-audit-root: Layer0
+
+    - name: Report Lean compiler diagnostics
+      if: failure()
+      shell: bash
+      working-directory: ${{ github.action_path }}/lean
+      run: |
+        if ! diagnostic=$(lake build --wfail 2>&1); then
+          diagnostic=${diagnostic//%/%25}
+          diagnostic=${diagnostic//$'\r'/%0D}
+          diagnostic=${diagnostic//$'\n'/%0A}
+          printf '::error title=Lean build failed::%s\n' "$diagnostic"
+          exit 1
+        fi

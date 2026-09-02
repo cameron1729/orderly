@@ -1,0 +1,58 @@
+name: Publish correctness PDFs
+
+on:
+  workflow_run:
+    workflows: [Correct]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: correctness-pdf-${{ github.event.workflow_run.head_sha }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish correctness PDFs
+    if: >-
+      github.repository == 'cameron1729/orderly' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.path == '.github/workflows/layers.yml' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: pdf-publication
+
+    steps:
+      - name: Checkout the verified revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+
+      - name: Check verification and independent document approvals
+        id: evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash layers/common/pdf/publish.sh prepare "$RUNNER_TEMP/orderly-pdf"
+
+      - name: Install the PDF renderer
+        if: steps.evidence.outputs.exists != 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes pandoc texlive-xetex texlive-fonts-recommended lmodern fonts-dejavu-core poppler-utils
+
+      - name: Render the correctness proof and theory companion
+        if: steps.evidence.outputs.exists != 'true'
+        run: bash layers/common/pdf/publish.sh render "$RUNNER_TEMP/orderly-pdf"
+
+      - name: Publish the PDFs
+        if: steps.evidence.outputs.exists != 'true'
+        env:
+          PDF_DEPLOY_KEY: ${{ secrets.PDF_DEPLOY_KEY }}
+        run: bash layers/common/pdf/publish.sh upload "$RUNNER_TEMP/orderly-pdf"

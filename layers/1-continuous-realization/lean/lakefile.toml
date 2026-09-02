@@ -1,0 +1,10 @@
+name = "orderly_layer_1"
+version = "0.1.0"
+defaultTargets = ["Layer1"]
+
+[[require]]
+name = "orderly"
+path = "../../common/lean"
+
+[[lean_lib]]
+name = "Layer1"
