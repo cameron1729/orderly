@@ -1,0 +1,22 @@
+name: Verify Layer 3
+description: Verify PHP conformance with the executable haskell reference
+
+runs:
+  using: composite
+  steps:
+    - name: Verify the shared premise
+      shell: bash
+      run: bash "${{ github.action_path }}/verify"
+
+    - name: Check the Lean proof
+      uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1.6.0
+      with:
+        lake-package-directory: layers/3-haskell-reference/lean
+        build: true
+        build-args: --wfail
+        test: false
+        use-mathlib-cache: false
+        leanchecker: true
+        leanchecker-args: Layer3 Orderly
+        axiom-audit: true
+        axiom-audit-root: Layer3

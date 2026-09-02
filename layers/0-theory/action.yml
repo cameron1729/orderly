@@ -1,0 +1,22 @@
+name: Verify Layer 0
+description: Verify the PHP library against the mathematical theory
+
+runs:
+  using: composite
+  steps:
+    - name: Verify the theory and repository witness
+      shell: bash
+      run: ${{ github.action_path }}/verify
+
+    - name: Check the Lean proof
+      uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1.6.0
+      with:
+        lake-package-directory: layers/0-theory/lean
+        build: true
+        build-args: --wfail
+        test: false
+        use-mathlib-cache: false
+        leanchecker: true
+        leanchecker-args: Layer0 Orderly
+        axiom-audit: true
+        axiom-audit-root: Layer0

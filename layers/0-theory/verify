@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+layer=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+(
+    cd "$layer"
+    sha256sum --check THEORY.sha256
+)
+
+bash "$layer/../common/verify-repository.sh"
