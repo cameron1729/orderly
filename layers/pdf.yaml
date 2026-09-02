@@ -1,0 +1,28 @@
+from: markdown+tex_math_dollars+gfm_auto_identifiers
+to: latex
+standalone: true
+number-sections: true
+pdf-engine: xelatex
+pdf-engine-opts:
+  - -no-shell-escape
+template: layers/common/pdf/template.tex
+filters:
+  - layers/common/pdf/document.lua
+metadata:
+  title: On the Correctness of Orderly
+  author: Cameron Ball
+  paper: true
+  abstract: >-
+    We present a revision-specific correctness argument for the Orderly Composer
+    package. Correctness requires purity and satisfaction of the applicable layer
+    rules by every normally returned result. The argument combines machine-checked
+    implications with repository verification and independently approved definitions.
+  document_kind: correctness
+  sources:
+    - path: layers/common/templates/correctness.md
+      id: definitions
+      kind: template
+      definition: layers/CORRECTNESS.md
+    - path: layers/0-theory/templates/proof.md
+      id: layer-0
+      kind: template

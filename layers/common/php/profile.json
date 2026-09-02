@@ -1,0 +1,11 @@
+{
+    "version": "8.4.25",
+    "source_url": "https://www.php.net/distributions/php-8.4.25.tar.xz",
+    "source_sha256": "dc1ad8b4109898d9db49744450403874858c23efc685b1032a50bd1e83906848",
+    "os": "Linux",
+    "architecture": "x86_64",
+    "integer_size": 8,
+    "sapi": "cli",
+    "thread_safe": false,
+    "optimization_level": "0x7FFEBFFF"
+}

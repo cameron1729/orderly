@@ -1,0 +1,31 @@
+name: Verify Layer 3
+description: Verify PHP correctness against the executable Haskell reference
+
+runs:
+  using: composite
+  steps:
+    - name: Prepare the PHP verification runtime
+      uses: ./layers/common/php
+
+    - name: Verify the shared premise
+      shell: bash
+      run: bash "${{ github.action_path }}/verify"
+
+    - name: Check the Lean proof
+      uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1.6.0
+      with:
+        lake-package-directory: layers/3-haskell-reference/lean
+        build: true
+        build-args: --wfail
+        test: false
+        use-mathlib-cache: false
+        # These small proofs build quickly; do not restore obsolete proof modules.
+        use-github-cache: false
+        leanchecker: true
+        leanchecker-args: Layer3 Orderly
+        axiom-audit: true
+        axiom-audit-root: Layer3
+
+    - name: Match the Lean model to the opcode witness
+      shell: bash
+      run: bash "${{ github.action_path }}/../common/php/check-model.sh"

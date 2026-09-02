@@ -1,0 +1,65 @@
+\documentclass[$if(paper)$10pt$else$11pt$endif$,a4paper]{$if(paper)$amsart$else$article$endif$}
+$if(paper)$
+% Use the AMS article's single-column layout, including its A4 proportions.
+$else$
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+$endif$
+\usepackage{amsmath}
+\usepackage{amsthm}
+\theoremstyle{plain}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{Latin Modern Roman}
+\setmathfont{Latin Modern Math}
+\setmonofont[Scale=0.8]{DejaVu Sans Mono}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{link}{HTML}{245A73}
+\usepackage[$if(paper)$hidelinks$else$colorlinks=true,allcolors=link$endif$,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+$if(paper)$
+\usepackage{fancyvrb}
+\pagestyle{headings}
+$else$
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Orderly}
+\fancyhead[R]{\small $subtitle$}
+\fancyfoot[L]{\small\texttt{$short_revision$}}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+$endif$
+\setlength{\emergencystretch}{2em}
+\clubpenalty=10000
+\widowpenalty=10000
+\setcounter{secnumdepth}{$if(numbersections)$1$else$-1$endif$}
+\setcounter{tocdepth}{2}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\hypersetup{pdftitle={$title$$if(subtitle)$: $subtitle$$endif$},pdfauthor={Cameron Ball}}
+
+\begin{document}
+$if(paper)$
+\title{$title$}
+\author{$author$}
+\begin{abstract}
+$abstract$
+\end{abstract}
+\maketitle
+$else$
+\thispagestyle{empty}
+{\Huge\bfseries $title$\par}
+\vspace{0.5em}
+{\Large $subtitle$\par}
+\vspace{0.5em}
+{\large Revision \href{https://github.com/$repository$/tree/$revision$}{\texttt{$revision$}}\par}
+\vspace{1em}
+\noindent Throughout this document, \href{https://github.com/$repository$/tree/$revision$}{\texttt{$short_revision$}} denotes the revision identified above.\par
+$endif$
+$body$
+\end{document}
